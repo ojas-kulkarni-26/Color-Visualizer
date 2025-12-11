@@ -24,3 +24,6 @@ A powerful, interactive web tool that helps designers and developers visualize c
 - **Easy Management**: Delete palettes you no longer need
 - **Click-to-Copy**: Copy any color code by clicking on it
 - **Smart Notifications**: Visual feedback for all actions
+
+### Try it at
+https://ojas-kulkarni-26.github.io/Color-Visualizer/
