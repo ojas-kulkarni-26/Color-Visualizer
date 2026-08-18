@@ -990,6 +990,41 @@
             color: #666;
             font-size: 0.9em;
         }
+
+
+        /* Palette lab additions */
+        .tool-row { display:flex; gap:10px; flex-wrap:wrap; align-items:end; margin-top:15px; }
+        .tool-field { display:grid; gap:6px; color:#555; font-size:.85em; font-weight:600; }
+        .tool-field select, .tool-field input { border:2px solid #e0e0e0; border-radius:8px; padding:9px; background:#fff; font:inherit; }
+        .tool-field input[type="color"] { height:40px; padding:3px; min-width:56px; cursor:pointer; }
+        .utility-button { background:#fff; color:#4c4f75; border:2px solid #dfe2ff; }
+        .utility-button:hover { background:#f2f3ff; box-shadow:0 8px 18px rgba(102,126,234,.16); }
+        .role-picker { border:0; width:100%; height:60px; border-radius:10px; cursor:pointer; padding:0; background:transparent; opacity:0; position:absolute; inset:0; }
+        .color-box { overflow:hidden; }
+        .color-lock { display:flex; justify-content:center; gap:5px; font-size:.78em; margin-top:4px; color:#555; cursor:pointer; }
+        .color-lock input { accent-color:#667eea; }
+        .audit-panel { margin-top:20px; background:#f8f9fa; border-radius:14px; padding:16px; }
+        .audit-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+        .audit-header h3 { color:#333; font-size:1em; }
+        .audit-summary { font-size:.88em; color:#666; }
+        .contrast-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+        .contrast-item { background:#fff; border-left:4px solid #999; border-radius:7px; padding:9px; font-size:.8em; display:grid; gap:3px; }
+        .contrast-item.pass { border-color:#249b58; }.contrast-item.fail { border-color:#e5484d; }
+        .contrast-item strong { color:#333; }.contrast-item span { color:#666; }
+        .contrast-sample { display:inline-flex; width:max-content; padding:3px 7px; border-radius:4px; font-weight:700; }
+        .status-dot { display:inline-block; width:9px; height:9px; border-radius:50%; background:#999; margin-right:5px; }
+        .status-dot.pass { background:#249b58; }.status-dot.fail { background:#e5484d; }
+        body.dark-preview { background:linear-gradient(135deg,#172033,#303852); }
+        body.dark-preview header, body.dark-preview .mockup { background:#182033; color:#e8edf8; }
+        body.dark-preview .mockup-header, body.dark-preview .favorites-section, body.dark-preview .audit-panel { background:#232d43; color:#edf1fb; border-color:#3b4964; }
+        body.dark-preview .subtitle, body.dark-preview label, body.dark-preview .color-label, body.dark-preview .tool-field, body.dark-preview .audit-summary { color:#c6cede; }
+        body.dark-preview textarea, body.dark-preview .tool-field select, body.dark-preview .tool-field input, body.dark-preview .favorite-item, body.dark-preview .contrast-item { background:#101727; color:#edf1fb; border-color:#45536e; }
+        body.dark-preview .favorite-name, body.dark-preview .contrast-item strong { color:#edf1fb; }
+        body.dark-preview .mockup-content { background:#202a3d; }
+        body.dark-preview .feature-card, body.dark-preview .activity-feed, body.dark-preview .playlist, body.dark-preview .workout-list, body.dark-preview .photo-info { background:#2a354b; }
+        body.dark-preview .post-card, body.dark-preview .course-card, body.dark-preview .stat-card, body.dark-preview .workout-item, body.dark-preview .destination-info, body.dark-preview .property-card { background:#eef1f7; color:#222; }
+        @media (max-width: 700px) { .controls-layout { grid-template-columns:1fr; } .favorites-section { width:auto; } .color-hierarchy { grid-template-columns:repeat(2,1fr); } .contrast-grid { grid-template-columns:1fr; } }
+
     </style>
 </head>
 <body>
@@ -1008,33 +1043,49 @@
                     
                     <div class="color-hierarchy">
                         <div class="color-role">
-                            <div class="color-box" id="primaryColor" data-color="#071A52" onclick="copyColor(this)"></div>
-                            <div class="color-label">Primary</div>
+                            <div class="color-box" id="primaryColor" data-color="#071A52" onclick="copyColor(this)"><input class="role-picker" id="primaryPicker" type="color" aria-label="Choose primary color"></div>
+                            <div class="color-label">Primary</div><label class="color-lock"><input id="primaryLock" type="checkbox"> Lock</label>
                             <div class="color-code" id="primaryCode" onclick="copyColor(this)">#071A52</div>
                         </div>
                         <div class="color-role">
-                            <div class="color-box" id="secondaryColor" data-color="#086972" onclick="copyColor(this)"></div>
-                            <div class="color-label">Secondary</div>
+                            <div class="color-box" id="secondaryColor" data-color="#086972" onclick="copyColor(this)"><input class="role-picker" id="secondaryPicker" type="color" aria-label="Choose secondary color"></div>
+                            <div class="color-label">Secondary</div><label class="color-lock"><input id="secondaryLock" type="checkbox"> Lock</label>
                             <div class="color-code" id="secondaryCode" onclick="copyColor(this)">#086972</div>
                         </div>
                         <div class="color-role">
-                            <div class="color-box" id="tertiaryColor" data-color="#17B978" onclick="copyColor(this)"></div>
-                            <div class="color-label">Tertiary</div>
+                            <div class="color-box" id="tertiaryColor" data-color="#17B978" onclick="copyColor(this)"><input class="role-picker" id="tertiaryPicker" type="color" aria-label="Choose tertiary color"></div>
+                            <div class="color-label">Tertiary</div><label class="color-lock"><input id="tertiaryLock" type="checkbox"> Lock</label>
                             <div class="color-code" id="tertiaryCode" onclick="copyColor(this)">#17B978</div>
                         </div>
                         <div class="color-role">
-                            <div class="color-box" id="accentColor" data-color="#A7FF83" onclick="copyColor(this)"></div>
-                            <div class="color-label">Accent</div>
+                            <div class="color-box" id="accentColor" data-color="#A7FF83" onclick="copyColor(this)"><input class="role-picker" id="accentPicker" type="color" aria-label="Choose accent color"></div>
+                            <div class="color-label">Accent</div><label class="color-lock"><input id="accentLock" type="checkbox"> Lock</label>
                             <div class="color-code" id="accentCode" onclick="copyColor(this)">#A7FF83</div>
                         </div>
                     </div>
                     
-                    <div class="button-group">
-                        <button onclick="applyColors()">🎨 Apply Colors</button>
-                        <button onclick="savePalette()">⭐ Save Palette</button>
-                        <button onclick="shuffleColors()">🔀 Shuffle Colors</button>
-                        <button onclick="randomColors()">🎲 Generate Random</button>
+                    <div class="tool-row" aria-label="Palette tools">
+                        <label class="tool-field">Generation style
+                            <select id="generationMode">
+                                <option value="random">Curated random</option><option value="complementary">Complementary</option><option value="analogous">Analogous</option><option value="triadic">Triadic</option><option value="monochromatic">Monochromatic</option>
+                            </select>
+                        </label>
+                        <button type="button" id="generateButton">🎲 Generate palette</button>
+                        <button type="button" id="darkModeButton" class="utility-button" aria-pressed="false">◐ Dark preview</button>
                     </div>
+                    <div class="button-group">
+                        <button type="button" id="applyButton">🎨 Apply Colors</button>
+                        <button type="button" id="saveButton">⭐ Save Palette</button>
+                        <button type="button" id="shuffleButton">🔀 Shuffle Roles</button>
+                        <button type="button" id="shareButton" class="utility-button">🔗 Copy share link</button>
+                        <button type="button" id="copyCssButton" class="utility-button">📋 Copy CSS</button>
+                        <button type="button" id="exportButton" class="utility-button">⇩ Export JSON</button>
+                        <label class="utility-button" style="padding:10px 20px; border-radius:10px; cursor:pointer; font-size:14px; font-weight:600;">⇧ Import JSON<input id="importInput" type="file" accept="application/json,.json" hidden></label>
+                    </div>
+                    <section class="audit-panel" aria-live="polite" aria-labelledby="auditTitle">
+                        <div class="audit-header"><div><h3 id="auditTitle">Accessibility contrast audit</h3><p class="audit-summary" id="auditSummary">Checking text contrast against each palette color.</p></div><span title="WCAG AA normal text requires 4.5:1">WCAG AA · 4.5:1</span></div>
+                        <div class="contrast-grid" id="contrastGrid"></div>
+                    </section>
                 </div>
                 
                 <div class="favorites-section">
@@ -1616,196 +1667,52 @@
     </div>
 
     <script>
-        let currentColors = ['#071A52', '#086972', '#17B978', '#A7FF83'];
-        let favorites = JSON.parse(localStorage.getItem('colorPaletteFavorites')) || [];
+        const roles = ['primary', 'secondary', 'tertiary', 'accent'];
+        const defaults = ['#071A52', '#086972', '#17B978', '#A7FF83'];
+        let currentColors = [...defaults];
+        let favorites = safeReadFavorites();
 
+        function safeReadFavorites() { try { return JSON.parse(localStorage.getItem('colorPaletteFavorites')) || []; } catch { return []; } }
+        function normalHex(hex) { const value = hex.replace('#','').trim(); return /^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value) ? '#' + (value.length === 3 ? value.split('').map(c=>c+c).join('') : value).toUpperCase() : null; }
+        function colorToHex(value) {
+            const probe = document.createElement('span'); probe.style.color = value.trim(); document.body.appendChild(probe);
+            const match = getComputedStyle(probe).color.match(/\d+/g); probe.remove();
+            if (!match || match.length < 3) return null;
+            return '#' + match.slice(0,3).map(n => Number(n).toString(16).padStart(2,'0')).join('').toUpperCase();
+        }
         function parseColors(input) {
-            const lines = input.split('\n');
-            const colors = [];
-            
-            lines.forEach(line => {
-                const match = line.match(/#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})/);
-                if (match) {
-                    colors.push(match[0]);
-                }
-            });
-            
-            return colors.slice(0, 4);
+            const found = input.match(/#[0-9a-f]{3,8}\b|(?:rgb|hsl|oklch)a?\([^)]*\)|\b(?:red|blue|green|black|white|orange|purple|pink|teal|navy|coral|gold)\b/gi) || [];
+            return found.map(v => normalHex(v) || colorToHex(v)).filter(Boolean).slice(0,4);
         }
-
-        function applyColors() {
-            const input = document.getElementById('colorInput').value;
-            const colors = parseColors(input);
-            
-            if (colors.length === 0) {
-                showNotification('Please enter valid hex colors', 'error');
-                return;
-            }
-            
-            currentColors = colors;
-            updateColorHierarchy();
-            updateCSSVariables();
-            showNotification('Colors applied successfully!', 'success');
+        function setPalette(colors, announce = true) {
+            currentColors = roles.map((_, i) => normalHex(colors[i] || currentColors[i] || defaults[i]) || defaults[i]);
+            document.getElementById('colorInput').value = currentColors.join('\n'); updateColorHierarchy(); updateCSSVariables(); updateAudit(); updateShareUrl();
+            if (announce) showNotification('Palette applied successfully!', 'success');
         }
-
-        function updateColorHierarchy() {
-            // Update color boxes
-            const roles = ['primary', 'secondary', 'tertiary', 'accent'];
-            currentColors.forEach((color, index) => {
-                if (index < 4) {
-                    const box = document.getElementById(`${roles[index]}Color`);
-                    const code = document.getElementById(`${roles[index]}Code`);
-                    if (box) {
-                        box.style.background = color;
-                        box.setAttribute('data-color', color);
-                    }
-                    if (code) {
-                        code.textContent = color;
-                    }
-                }
-            });
-        }
-
-        function updateCSSVariables() {
-            const root = document.documentElement;
-            root.style.setProperty('--primary', currentColors[0] || '#071A52');
-            root.style.setProperty('--secondary', currentColors[1] || '#086972');
-            root.style.setProperty('--tertiary', currentColors[2] || '#17B978');
-            root.style.setProperty('--accent', currentColors[3] || '#A7FF83');
-        }
-
-        function copyColor(element) {
-            const color = element.getAttribute('data-color') || element.textContent;
-            navigator.clipboard.writeText(color);
-            showNotification(`Copied ${color}`, 'success');
-        }
-
-        function shuffleColors() {
-            if (currentColors.length < 2) {
-                showNotification('Need at least 2 colors to shuffle', 'error');
-                return;
-            }
-            
-            // Fisher-Yates shuffle
-            const shuffled = [...currentColors];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            
-            currentColors = shuffled;
-            document.getElementById('colorInput').value = currentColors.join('\n');
-            updateColorHierarchy();
-            updateCSSVariables();
-            showNotification('Colors shuffled!', 'success');
-        }
-
-        function savePalette() {
-            if (currentColors.length === 0) {
-                showNotification('No colors to save', 'error');
-                return;
-            }
-            
-            const name = prompt('Enter a name for this palette:');
-            if (!name) return;
-            
-            const palette = {
-                name: name,
-                colors: [...currentColors],
-                id: Date.now()
-            };
-            
-            // Check if palette with same name exists
-            const existingIndex = favorites.findIndex(f => f.name === name);
-            if (existingIndex !== -1) {
-                if (confirm('Palette with this name already exists. Replace it?')) {
-                    favorites[existingIndex] = palette;
-                } else {
-                    return;
-                }
-            } else {
-                favorites.push(palette);
-            }
-            
-            localStorage.setItem('colorPaletteFavorites', JSON.stringify(favorites));
-            loadFavorites();
-            showNotification('Palette saved!', 'success');
-        }
-
-        function loadFavorites() {
-            const favoritesList = document.getElementById('favoritesList');
-            favoritesList.innerHTML = '';
-            
-            if (favorites.length === 0) {
-                favoritesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No favorites yet</div>';
-                return;
-            }
-            
-            favorites.forEach(favorite => {
-                const item = document.createElement('div');
-                item.className = 'favorite-item';
-                item.innerHTML = `
-                    <div class="favorite-colors">
-                        ${favorite.colors.map(color => `<div class="favorite-color" style="background: ${color}"></div>`).join('')}
-                    </div>
-                    <div class="favorite-name">${favorite.name}</div>
-                    <button class="delete-favorite" onclick="deleteFavorite(${favorite.id})">×</button>
-                `;
-                item.onclick = (e) => {
-                    if (!e.target.classList.contains('delete-favorite')) {
-                        applyFavorite(favorite);
-                    }
-                };
-                favoritesList.appendChild(item);
-            });
-        }
-
-        function applyFavorite(favorite) {
-            currentColors = [...favorite.colors];
-            document.getElementById('colorInput').value = currentColors.join('\n');
-            updateColorHierarchy();
-            updateCSSVariables();
-            showNotification(`Applied palette: ${favorite.name}`, 'success');
-        }
-
-        function deleteFavorite(id) {
-            event.stopPropagation();
-            if (confirm('Delete this palette?')) {
-                favorites = favorites.filter(f => f.id !== id);
-                localStorage.setItem('colorPaletteFavorites', JSON.stringify(favorites));
-                loadFavorites();
-                showNotification('Palette deleted', 'success');
-            }
-        }
-
-        function randomColors() {
-            const colors = [];
-            for (let i = 0; i < 4; i++) {
-                const color = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
-                colors.push(color);
-            }
-            document.getElementById('colorInput').value = colors.join('\n');
-            applyColors();
-        }
-
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.style.background = type === 'error' ? '#ff4444' : '#4CAF50';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 2000);
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            applyColors();
-            loadFavorites();
-        });
+        function applyColors() { const colors=parseColors(document.getElementById('colorInput').value); if (!colors.length) return showNotification('Enter valid HEX, RGB, HSL, OKLCH, or CSS named colors.', 'error'); setPalette(colors); }
+        function updateColorHierarchy() { roles.forEach((role,i)=>{ const color=currentColors[i]; const box=document.getElementById(role+'Color'), code=document.getElementById(role+'Code'), picker=document.getElementById(role+'Picker'); box.style.background=color; box.dataset.color=color; code.textContent=color; code.dataset.color=color; picker.value=color; }); }
+        function updateCSSVariables() { roles.forEach((role,i)=>document.documentElement.style.setProperty('--'+role,currentColors[i])); }
+        async function copyText(text, message) { try { await navigator.clipboard.writeText(text); showNotification(message || 'Copied to clipboard!', 'success'); } catch { showNotification('Could not access the clipboard. Please copy manually.', 'error'); } }
+        function copyColor(element) { copyText(element.dataset.color || element.textContent.trim(), 'Color copied!'); }
+        function shuffleColors() { const unlocked=roles.map((r,i)=>({i, color:currentColors[i]})).filter(({i})=>!document.getElementById(roles[i]+'Lock').checked); if(unlocked.length<2) return showNotification('Unlock at least two colors to shuffle.', 'error'); const colors=unlocked.map(x=>x.color); for(let i=colors.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[colors[i],colors[j]]=[colors[j],colors[i]];} unlocked.forEach((x,i)=>currentColors[x.i]=colors[i]); setPalette(currentColors, false); showNotification('Unlocked roles shuffled!', 'success'); }
+        function hexToRgb(hex) { const n=parseInt(hex.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+        function rgbToHex(rgb) { return '#'+rgb.map(x=>Math.round(Math.max(0,Math.min(255,x))).toString(16).padStart(2,'0')).join('').toUpperCase(); }
+        function rgbToHsl(hex) { let [r,g,b]=hexToRgb(hex).map(x=>x/255), max=Math.max(r,g,b),min=Math.min(r,g,b),h=0,s=0,l=(max+min)/2,d=max-min; if(d){s=d/(1-Math.abs(2*l-1)); if(max===r)h=60*((g-b)/d%6); else if(max===g)h=60*((b-r)/d+2); else h=60*((r-g)/d+4);} return [(h+360)%360,s,l]; }
+        function hslToHex(h,s,l) { const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2; let rgb=h<60?[c,x,0]:h<120?[x,c,0]:h<180?[0,c,x]:h<240?[0,x,c]:h<300?[x,0,c]:[c,0,x]; return rgbToHex(rgb.map(v=>(v+m)*255)); }
+        function generatePalette() { const mode=document.getElementById('generationMode').value, base=Math.floor(Math.random()*360), sat=.58+Math.random()*.25, light=.38+Math.random()*.14; let colors; if(mode==='complementary') colors=[hslToHex(base,sat,light),hslToHex((base+180)%360,sat,.47),hslToHex(base,.4,.62),hslToHex((base+180)%360,.7,.76)]; else if(mode==='analogous') colors=[0,25,55,185].map((d,i)=>hslToHex((base+d)%360,sat-i*.08,light+i*.1)); else if(mode==='triadic') colors=[base,(base+120)%360,(base+240)%360,base].map((h,i)=>hslToHex(h,sat-i*.08,i===3?.78:light+i*.05)); else if(mode==='monochromatic') colors=[.25,.4,.58,.78].map(l=>hslToHex(base,sat,l)); else colors=[hslToHex(base,.68,.32),hslToHex((base+35)%360,.63,.43),hslToHex((base+165)%360,.58,.47),hslToHex((base+210)%360,.7,.75)]; roles.forEach((r,i)=>{if(document.getElementById(r+'Lock').checked) colors[i]=currentColors[i];}); setPalette(colors, false); showNotification('Generated '+mode+' palette.', 'success'); }
+        function luminance(hex) { const rgb=hexToRgb(hex).map(c=>{c/=255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)}); return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2]; }
+        function contrast(a,b) { const [x,y]=[luminance(a),luminance(b)].sort((m,n)=>n-m); return (x+.05)/(y+.05); }
+        function updateAudit() { const grid=document.getElementById('contrastGrid'); let passes=0; grid.innerHTML=''; roles.forEach((role,i)=>{ const color=currentColors[i], white=contrast(color,'#FFFFFF'), black=contrast(color,'#111111'), best=white>=black?{on:'#FFFFFF',ratio:white,label:'white'}:{on:'#111111',ratio:black,label:'dark'}; const pass=best.ratio>=4.5; if(pass)passes++; const item=document.createElement('div'); item.className='contrast-item '+(pass?'pass':'fail'); item.innerHTML=`<strong><span class="status-dot ${pass?'pass':'fail'}"></span>${role[0].toUpperCase()+role.slice(1)} · ${best.ratio.toFixed(2)}:1</strong><span>Best normal text: ${best.label} ${pass?'passes AA':'fails AA'}</span><span class="contrast-sample" style="background:${color};color:${best.on}">Aa Sample text</span>`; grid.appendChild(item); }); document.getElementById('auditSummary').textContent=`${passes} of 4 palette roles support WCAG AA normal text (4.5:1) with their best black or white text color.`; }
+        function updateShareUrl() { const url=new URL(location.href); url.searchParams.set('palette',currentColors.map(x=>x.slice(1)).join('-')); history.replaceState({},'',url); }
+        function loadSharedPalette() { const raw=new URLSearchParams(location.search).get('palette'); if(raw){const colors=raw.split('-').map(x=>normalHex('#'+x)).filter(Boolean);if(colors.length)setPalette(colors,false);} }
+        function cssExport() { return `:root {\n${roles.map((r,i)=>`  --${r}: ${currentColors[i]};`).join('\n')}\n}`; }
+        function downloadJson() { const data=JSON.stringify({name:'Color Visualizer palette',colors:currentColors,createdAt:new Date().toISOString()},null,2), a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([data],{type:'application/json'})); a.download='color-palette.json'; a.click(); URL.revokeObjectURL(a.href); showNotification('Palette JSON exported.', 'success'); }
+        function savePalette() { const name=prompt('Name this palette:'); if(!name?.trim())return; const palette={name:name.trim(),colors:[...currentColors],id:Date.now()}; const found=favorites.findIndex(p=>p.name.toLowerCase()===palette.name.toLowerCase()); if(found>-1){if(!confirm('Replace the saved palette with this name?'))return;favorites[found]=palette;}else favorites.push(palette); localStorage.setItem('colorPaletteFavorites',JSON.stringify(favorites));loadFavorites();showNotification('Palette saved!', 'success'); }
+        function loadFavorites() { const list=document.getElementById('favoritesList'); list.innerHTML=''; if(!favorites.length){list.textContent='No favorites yet';list.style.cssText='text-align:center;color:#999;padding:20px';return;} favorites.forEach(f=>{const item=document.createElement('div');item.className='favorite-item';const dots=document.createElement('div');dots.className='favorite-colors';f.colors.forEach(c=>{const dot=document.createElement('div');dot.className='favorite-color';dot.style.background=c;dots.append(dot)});const name=document.createElement('div');name.className='favorite-name';name.textContent=f.name;const del=document.createElement('button');del.className='delete-favorite';del.textContent='×';del.setAttribute('aria-label','Delete '+f.name);del.onclick=e=>{e.stopPropagation();deleteFavorite(f.id)};item.onclick=()=>{setPalette(f.colors,false);showNotification('Applied palette: '+f.name,'success')};item.append(dots,name,del);list.append(item);}); }
+        function deleteFavorite(id) { if(confirm('Delete this palette?')){favorites=favorites.filter(f=>f.id!==id);localStorage.setItem('colorPaletteFavorites',JSON.stringify(favorites));loadFavorites();showNotification('Palette deleted','success');} }
+        function randomColors(){generatePalette()}
+        function showNotification(message,type='success'){const n=document.createElement('div');n.className='notification';n.style.background=type==='error'?'#d64045':'#238636';n.setAttribute('role','status');n.textContent=message;document.body.append(n);setTimeout(()=>{n.style.animation='slideOut .3s ease';setTimeout(()=>n.remove(),300)},2600)}
+        document.addEventListener('DOMContentLoaded',()=>{ roles.forEach((role,i)=>{ const picker=document.getElementById(role+'Picker'); picker.addEventListener('click', e=>e.stopPropagation()); picker.addEventListener('input',e=>{currentColors[i]=e.target.value.toUpperCase();setPalette(currentColors,false)}); }); document.getElementById('applyButton').onclick=applyColors;document.getElementById('saveButton').onclick=savePalette;document.getElementById('shuffleButton').onclick=shuffleColors;document.getElementById('generateButton').onclick=generatePalette;document.getElementById('copyCssButton').onclick=()=>copyText(cssExport(),'CSS variables copied!');document.getElementById('exportButton').onclick=downloadJson;document.getElementById('shareButton').onclick=()=>copyText(location.href,'Share link copied!');document.getElementById('darkModeButton').onclick=e=>{const on=document.body.classList.toggle('dark-preview');e.currentTarget.setAttribute('aria-pressed',on);e.currentTarget.textContent=on?'☀ Light preview':'◐ Dark preview'};document.getElementById('importInput').onchange=e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result),colors=Array.isArray(data)?data:data.colors;if(!Array.isArray(colors))throw Error();setPalette(colors);showNotification('Palette imported.','success')}catch{showNotification('That file does not contain a valid palette.','error')}};reader.readAsText(file)}; loadSharedPalette();updateColorHierarchy();updateCSSVariables();updateAudit();loadFavorites(); });
     </script>
 </body>
 </html>

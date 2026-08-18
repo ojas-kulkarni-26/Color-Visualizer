@@ -25,5 +25,14 @@ A powerful, interactive web tool that helps designers and developers visualize c
 - **Click-to-Copy**: Copy any color code by clicking on it
 - **Smart Notifications**: Visual feedback for all actions
 
+### ♿ Palette Lab
+- **WCAG AA contrast audit**: See the best light/dark text color and contrast ratio for every palette role
+- **Flexible color input**: Paste HEX, RGB, HSL, OKLCH, or common CSS color names; the tool normalizes them to HEX
+- **Intentional generation**: Generate curated random, complementary, analogous, triadic, or monochromatic palettes
+- **Lockable roles**: Keep important colors fixed while generating or shuffling the others
+- **Direct swatch editing**: Open the native color picker from any palette swatch
+- **Light and dark previews**: Inspect the full set of mockups against both interface themes
+- **Portable palettes**: Copy a shareable URL, export palette JSON, import JSON, or copy ready-to-use CSS custom properties
+
 ### Try it at
 https://ojas-kulkarni-26.github.io/Color-Visualizer/
